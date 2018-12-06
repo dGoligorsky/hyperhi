@@ -56,6 +56,9 @@ const setupCanvas = function(canvas) {
     context.lineCap = "round"
     context.lineJoin = "round"
 
+    context.shadowBlur = 10
+    context.shadowColor = context.strokeStyle
+
     context.rect(0,0,w,h)
     context.fill()
 }
@@ -108,3 +111,7 @@ document.addEventListener("mousemove", function(event) {
     moveDraw(canvasOut, event.pageX, event.pageY)
 })
 
+window.addEventListener("resize", function() {
+    setupCanvas(canvasIn)
+    setupCanvas(canvasOut)
+})
