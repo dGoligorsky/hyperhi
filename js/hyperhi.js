@@ -1,5 +1,6 @@
 const cursor = document.querySelector("div.cursor")
-const canvasTag = document.querySelector("canvas.in")
+const canvasIn = document.querySelector("canvas.in")
+const canvasOut = document.querySelector("canvas.out")
 
 let isMouseDown = false
 
@@ -41,11 +42,22 @@ const setupCanvas = function(canvas) {
     const context = canvas.getContext("2d")
     context.scale(dpi, dpi)
 
-    context.fillStyle = "red"
-    context.strokeStyle = "red"
+    if (canvas.classList.contains("out")) {
+        context.fillStyle = "#ffffff"
+        context.strokeStyle = "#000000"
+    }
+    else {
+        context.fillStyle = "#000000"
+        context.strokeStyle = "#ffffff"
+    }
+
+
     context.lineWidth = 80
     context.lineCap = "round"
     context.lineJoin = "round"
+
+    context.rect(0,0,w,h)
+    context.fill()
 }
 
 // lets start to draw, based on the canvas, x, and y
@@ -53,9 +65,9 @@ const setupCanvas = function(canvas) {
 const startDraw = function(canvas, x, y) {
     const context = canvas.getContext("2d")
 
-    const colors = ["red", "yellow", "blue", "green"]
-    const randomNum = Math.floor(Math.random() * colors.length)
-    context.strokeStyle = colors[randomNum]
+    // const colors = ["red", "yellow", "blue", "green"]
+    // const randomNum = Math.floor(Math.random() * colors.length)
+    // context.strokeStyle = colors[randomNum]
 
     context.moveTo(x, y)
     context.beginPath()
@@ -72,12 +84,14 @@ const moveDraw = function (canvas, x, y) {
 }
 
 
-setupCanvas(canvasTag)
+setupCanvas(canvasIn)
+setupCanvas(canvasOut)
 
 document.addEventListener("mousedown", function(event) {
     isMouseDown = true
     growCursor()
-    startDraw(canvasTag, event.pageX, event.pageY)
+    startDraw(canvasIn, event.pageX, event.pageY)
+    startDraw(canvasOut, event.pageX, event.pageY)
 })
 
 document.addEventListener("mouseup", function() {
@@ -90,6 +104,7 @@ document.addEventListener("mousemove", function(event) {
     // event.pageX -> where we are on the page across
     // event.pageY -> where we are on the page downwards
     moveCursor(event.pageX, event.pageY)
-    moveDraw(canvasTag, event.pageX, event.pageY)
+    moveDraw(canvasIn, event.pageX, event.pageY)
+    moveDraw(canvasOut, event.pageX, event.pageY)
 })
 
